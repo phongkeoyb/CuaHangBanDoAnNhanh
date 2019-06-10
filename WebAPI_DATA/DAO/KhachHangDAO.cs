@@ -83,5 +83,18 @@ namespace WebAPI_DATA.DAO
             }
             return list;
         }
+
+        public List<KhachHang> KhachHangID(int makhachang)
+        {
+            List<KhachHang> list = new List<KhachHang>();
+            string query = $"SELECT * FROM KhachHang where makhachhang = '{makhachang}'";
+            DataTable data = DataProvider.Instance.ExecuteQuery(query);
+            foreach (DataRow item in data.Rows)
+            {
+                KhachHang obj = new KhachHang(item);
+                list.Add(obj);
+            }
+            return list;
+        }
     }
 }

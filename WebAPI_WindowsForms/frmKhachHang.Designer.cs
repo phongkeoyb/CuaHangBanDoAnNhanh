@@ -53,6 +53,8 @@
             this.btnXoa = new System.Windows.Forms.Button();
             this.txtTimKiem = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
+            this.btnChon = new System.Windows.Forms.Button();
+            this.btnThoat = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dtgKhachHang)).BeginInit();
             this.SuspendLayout();
             // 
@@ -267,11 +269,32 @@
             this.label7.TabIndex = 19;
             this.label7.Text = "Nhập tìm kiếm";
             // 
+            // btnChon
+            // 
+            this.btnChon.Location = new System.Drawing.Point(28, 133);
+            this.btnChon.Name = "btnChon";
+            this.btnChon.Size = new System.Drawing.Size(80, 35);
+            this.btnChon.TabIndex = 20;
+            this.btnChon.Text = "Chọn";
+            this.btnChon.UseVisualStyleBackColor = true;
+            // 
+            // btnThoat
+            // 
+            this.btnThoat.Location = new System.Drawing.Point(485, 133);
+            this.btnThoat.Name = "btnThoat";
+            this.btnThoat.Size = new System.Drawing.Size(80, 35);
+            this.btnThoat.TabIndex = 21;
+            this.btnThoat.Text = "Thoát";
+            this.btnThoat.UseVisualStyleBackColor = true;
+            this.btnThoat.Click += new System.EventHandler(this.btnThoat_Click);
+            // 
             // frmKhachHang
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 500);
+            this.Controls.Add(this.btnThoat);
+            this.Controls.Add(this.btnChon);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.txtTimKiem);
             this.Controls.Add(this.btnXoa);
@@ -292,6 +315,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.dtgKhachHang);
             this.Name = "frmKhachHang";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Quản lý khách hàng";
             ((System.ComponentModel.ISupportInitialize)(this.dtgKhachHang)).EndInit();
             this.ResumeLayout(false);
@@ -326,5 +350,7 @@
         private System.Windows.Forms.Button btnXoa;
         private System.Windows.Forms.TextBox txtTimKiem;
         private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Button btnChon;
+        private System.Windows.Forms.Button btnThoat;
     }
 }

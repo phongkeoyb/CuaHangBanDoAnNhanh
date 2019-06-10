@@ -59,5 +59,16 @@ namespace WebAPI_API.Controllers
             }
             return Ok(item);
         }
+
+        [HttpGet]
+        public IHttpActionResult KhachHangID([FromUri] int makhachhang)
+        {
+            List<KhachHang> item = KhachHangDAO.Instance.KhachHangID(makhachhang);
+            if (item.Count == 0)
+            {
+                return NotFound();
+            }
+            return Ok(item);
+        }
     }
 }

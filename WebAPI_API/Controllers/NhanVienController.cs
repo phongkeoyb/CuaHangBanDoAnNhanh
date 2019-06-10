@@ -9,11 +9,11 @@ using WebAPI_DATA.DTO;
 
 namespace WebAPI_API.Controllers
 {
-    public class MonController : ApiController
+    public class NhanVienController : ApiController
     {
         public IHttpActionResult Get()
         {
-            List<Mon> item = MonDAO.Instance.GetList();
+            List<NhanVien> item = NhanVienDAO.Instance.GetList();
             if (item.Count == 0)
             {
                 return NotFound();
@@ -22,20 +22,9 @@ namespace WebAPI_API.Controllers
         }
 
         [HttpGet]
-        public IHttpActionResult TimKiemMonAn([FromUri] string TenHangHoa)
+        public IHttpActionResult NhanVienID([FromUri] int manhanvien)
         {
-            List<Mon> item = MonDAO.Instance.TimKiemMonAN(TenHangHoa);
-            if (item.Count == 0)
-            {
-                return NotFound();
-            }
-            return Ok(item);
-        }
-
-        [HttpGet]
-        public IHttpActionResult TimKiemMonAN([FromUri] int maloaimon)
-        {
-            List<Mon> item = MonDAO.Instance.LoaiMonAn(maloaimon);
+            List<NhanVien> item = NhanVienDAO.Instance.NhanVienID(manhanvien);
             if (item.Count == 0)
             {
                 return NotFound();

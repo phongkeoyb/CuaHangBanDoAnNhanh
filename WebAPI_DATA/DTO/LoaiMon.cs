@@ -9,8 +9,8 @@ namespace WebAPI_DATA.DTO
 {
     public class LoaiMon
     {
-        int maloaimon { get; set; }
-        string tenloaimon { get; set; }
+        public int maloaimon { get; set; }
+        public string tenloaimon { get; set; }
 
         public LoaiMon(DataRow row)
         {

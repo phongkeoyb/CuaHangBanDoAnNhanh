@@ -195,5 +195,10 @@ namespace WebAPI_WindowsForms
             }
             dtgKhachHang.DataSource = listKhachHang;
         }
+
+        private void btnThoat_Click(object sender, EventArgs e)
+        {
+            Hide();
+        }
     }
 }

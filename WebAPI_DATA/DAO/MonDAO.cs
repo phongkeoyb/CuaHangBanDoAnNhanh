@@ -59,5 +59,18 @@ namespace WebAPI_DATA.DAO
             }
             return list;
         }
+
+        public List<Mon> LoaiMonAn(int maloaimon)
+        {
+            List<Mon> list = new List<Mon>();
+            string query = $"SELECT * FROM mon where  maloaimon like '%{maloaimon}%'";
+            DataTable data = DataProvider.Instance.ExecuteQuery(query);
+            foreach (DataRow item in data.Rows)
+            {
+                Mon obj = new Mon(item);
+                list.Add(obj);
+            }
+            return list;
+        }
     }
 }
