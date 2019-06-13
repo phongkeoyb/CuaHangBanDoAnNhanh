@@ -161,12 +161,16 @@ namespace WebAPI_WindowsForms
             int makh = int.Parse(txtMaKH.Text);
             using (var client = new HttpClient())
             {
+                //HTTP DELETE
                 client.BaseAddress = new Uri(baseAddress);
-                //HTTP POST
-                var deleteTask = client.GetAsync($"KhachHang?makhachhang={makh}");
+                var deleteTask = client.DeleteAsync($"KhachHang?makhachhang={makh}");
                 deleteTask.Wait();
+                var result = deleteTask.Result;
+                if (result.IsSuccessStatusCode)
+                {
+                    MessageBox.Show("Xóa thành công ");
+                }
             }
-            //KhachHangDAO.Instance.Delete(makh);
             load();
         }
 

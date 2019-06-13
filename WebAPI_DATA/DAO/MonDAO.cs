@@ -72,5 +72,28 @@ namespace WebAPI_DATA.DAO
             }
             return list;
         }
+
+        public int Create(int mamon, string tenhanghoa, int maloaimon, DateTime ngaysanxuat, int giahang)
+        {
+            string query = $"INSERT into Mon VALUES  ( '{mamon}', N'{tenhanghoa}', '{maloaimon}', N'{ngaysanxuat}', '{giahang}' )";
+
+            DataProvider.Instance.ExecuteNonQuery(query);
+
+            return 1;
+        }
+
+        public int Update(int mamon, string tenhanghoa, int maloaimon, DateTime ngaysanxuat, int giahang)
+        {
+            string query = $"UPDATE Mon SET tenhanghoa = N'{tenhanghoa}', maloaimon = '{maloaimon}',ngaysanxuat = N'{ngaysanxuat}',giahang = '{giahang}' where mamon='{mamon}'";
+            DataProvider.Instance.ExecuteNonQuery(query);
+            return 1;
+        }
+
+        public int Delete(int mamon)
+        {
+            string query = $"delete Mon where mamon = '{mamon}'";
+            DataProvider.Instance.ExecuteNonQuery(query);
+            return 1;
+        }
     }
 }

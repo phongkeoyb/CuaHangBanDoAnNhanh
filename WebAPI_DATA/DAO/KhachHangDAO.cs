@@ -66,7 +66,7 @@ namespace WebAPI_DATA.DAO
         }
         public int Delete(int makhachhang)
         {
-            string query = $"DELETE KhachHang WHERE makhachhang={makhachhang}";
+            string query = $"DELETE KhachHang WHERE makhachhang = '{makhachhang}'";
             DataProvider.Instance.ExecuteNonQuery(query);
             return 1;
         }

@@ -46,5 +46,29 @@ namespace WebAPI_DATA.DAO
             }
             return list;
         }
+
+        
+        public int Create(int maloaimon, string tenloaimon)
+        {
+            string query = $"INSERT into LoaiMon VALUES  ( '{maloaimon}',N'{tenloaimon}' )";
+
+            DataProvider.Instance.ExecuteNonQuery(query);
+
+            return 1;
+        }
+
+        public int Update(int maloaimon, string tenloaimon)
+        {
+            string query = $"UPDATE LoaiMon SET Tenloaimon = N'{tenloaimon}' where maloaimon='{maloaimon}'";
+            DataProvider.Instance.ExecuteNonQuery(query);
+            return 1;
+        }
+
+        public int Delete(int maloaimon)
+        {
+            string query = $"delete LoaiMon where maloaimon = '{maloaimon}'";
+            DataProvider.Instance.ExecuteNonQuery(query);
+            return 1;
+        }
     }
 }

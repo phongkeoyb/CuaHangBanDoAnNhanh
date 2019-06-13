@@ -40,7 +40,6 @@ namespace WebAPI_API.Controllers
             return Ok();
         }
 
-        [HttpPost]
         public IHttpActionResult Delete([FromUri] int makhachhang)
         {
             if (makhachhang <= 0)

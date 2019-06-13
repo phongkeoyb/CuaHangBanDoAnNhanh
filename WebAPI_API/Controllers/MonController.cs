@@ -42,5 +42,29 @@ namespace WebAPI_API.Controllers
             }
             return Ok(item);
         }
+
+        public IHttpActionResult Post([FromBody] Mon x)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest("Not a valid model");
+            MonDAO.Instance.Create(x.mamon,x.tenhanghoa,x.maloaimon,x.ngaysanxuat,x.giahang);
+            return Ok();
+        }
+
+        public IHttpActionResult Put([FromBody] Mon x)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest("Not a valid data");
+            MonDAO.Instance.Update(x.mamon,x.tenhanghoa,x.maloaimon,x.ngaysanxuat,x.giahang);
+            return Ok();
+        }
+
+        public IHttpActionResult Delete([FromUri] int mamon)
+        {
+            if (mamon <= 0)
+                return BadRequest("Not a valid mamon");
+            MonDAO.Instance.Delete(mamon);
+            return Ok();
+        }
     }
 }
