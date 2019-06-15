@@ -32,6 +32,12 @@ namespace WebAPI_DATA.DTO
             this.tongtien = tongtien;
         }
 
+        public HoaDon(int mahd, int tongtien)
+        {
+            this.mahoadon = mahd;
+            this.tongtien = tongtien;
+        }
+
         public HoaDon() { }
     }
 }

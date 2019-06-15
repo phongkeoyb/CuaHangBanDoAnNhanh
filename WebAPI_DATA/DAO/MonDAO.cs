@@ -46,7 +46,7 @@ namespace WebAPI_DATA.DAO
             }
             return list;
         }
-        
+
         public List<Mon> TimKiemMonAN(string tenhanghoa)
         {
             List<Mon> list = new List<Mon>();
@@ -94,6 +94,18 @@ namespace WebAPI_DATA.DAO
             string query = $"delete Mon where mamon = '{mamon}'";
             DataProvider.Instance.ExecuteNonQuery(query);
             return 1;
+        }
+        public List<Mon> MonAnID(int mamon)
+        {
+            List<Mon> list = new List<Mon>();
+            string query = $"SELECT * FROM mon where  maMon like '%{mamon}%'";
+            DataTable data = DataProvider.Instance.ExecuteQuery(query);
+            foreach (DataRow item in data.Rows)
+            {
+                Mon obj = new Mon(item);
+                list.Add(obj);
+            }
+            return list;
         }
     }
 }

@@ -25,8 +25,18 @@ namespace WebAPI_API.Controllers
         {
             if (!ModelState.IsValid)
                 return BadRequest("Not a valid model");
-            HoaDonDAO.Instance.Create(x.mahoadon,x.ngaythang,x.manv,x.makh,x.tongtien);
+            HoaDonDAO.Instance.Create(x.mahoadon, x.ngaythang, x.manv, x.makh);
             return Ok();
         }
+
+
+        public IHttpActionResult Put([FromBody] HoaDon x)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest("Not a valid data");
+            HoaDonDAO.Instance.Update(x.mahoadon, x.tongtien);
+            return Ok();
+        }
+
     }
 }

@@ -15,11 +15,17 @@ namespace WebAPI_WindowsForms
 {
     public partial class frmHoaDon : Form
     {
-        
+        public int tongtien;
+        public int mamon = 0;
         public frmHoaDon()
         {
             InitializeComponent();
             timer1.Start();
+            txtTenKhachHang.Enabled = false;
+            txtTenNhanVien.Enabled = false;
+            txtGiaHang.Enabled = false;
+            txtDiaChi.Enabled = false;
+            txtSDT.Enabled = false;
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -38,6 +44,7 @@ namespace WebAPI_WindowsForms
         List<HoaDon> listHoaDon = null;
         List<LoaiMon> listLoaiMon = null;
         List<NhanVien> listNhanVien = null;
+        int dong = 0;
 
         private List<LoaiMon> LoadLoaiMon()
         {
@@ -178,6 +185,8 @@ namespace WebAPI_WindowsForms
 
             cbMaNhanVien.DataSource = listNhanVien;
             cbMaNhanVien.DisplayMember = "maNV";
+
+
         }
 
         void danhsachmon()
@@ -253,7 +262,7 @@ namespace WebAPI_WindowsForms
         {
             int id = 0;
             ComboBox cb = sender as ComboBox;
-            if(cb.SelectedItem == null) { return; }
+            if (cb.SelectedItem == null) { return; }
 
             LoaiMon selected = cb.SelectedItem as LoaiMon;
             id = selected.maloaimon;
@@ -329,6 +338,16 @@ namespace WebAPI_WindowsForms
             }
         }
 
+        public void loadMonAnID(int id)
+        {
+            List<Mon> list = MonDAO.Instance.MonAnID(id);
+
+            foreach (var item in list)
+            {
+                txtGiaHang.Text = item.giahang.ToString();
+            }
+        }
+
         private void cbMaKhachHang_SelectedIndexChanged(object sender, EventArgs e)
         {
             int makh = 0;
@@ -349,12 +368,187 @@ namespace WebAPI_WindowsForms
             manv = selected.manv;
             loadNhanvien(manv);
         }
-        
+
 
         private void btnNhanVien_Click(object sender, EventArgs e)
         {
             frmNhanVien nhanVien = new frmNhanVien();
             nhanVien.ShowDialog();
+        }
+        HoaDon hd = new HoaDon();
+        Mon m = new Mon();
+        ChiTietHoaDon ct = new ChiTietHoaDon();
+
+        private void btnCheckOut_Click(object sender, EventArgs e)
+        {
+            int tongtien = int.Parse(txbTongTien.Text);
+            int mahd = int.Parse(txtMaHoaDon.Text);
+            if (txbTongTien.Text == "")
+            {
+                MessageBox.Show("Chưa đầy đủ hóa đơn", "THÔNG BÁO", MessageBoxButtons.OK);
+            }
+            else
+            {
+                HoaDon hoaDon = new HoaDon(mahd, tongtien);
+                using (var client = new HttpClient())
+                {
+                    client.BaseAddress = new Uri(baseAddress);
+
+                    //HTTP POST
+                    var postTask = client.PutAsJsonAsync<HoaDon>("HoaDon", hoaDon);
+
+                    postTask.Wait();
+
+                    var result = postTask.Result;
+                    if (result.IsSuccessStatusCode)
+                    {
+                        //MessageBox.Show("Sửa thành công", "Thông báo", MessageBoxButtons.OK);
+                    }
+                }
+            }
+            //HoaDonDAO.Instance.Update(mahd, tongtien);
+            string thongbao = "Thanh toán tiền thành công với tổng số tiền là:  " + txbTongTien.Text;
+            MessageBox.Show(thongbao, "Thông báo", MessageBoxButtons.OK);
+            load();
+        }
+
+        private void dtHoaDon_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            dong = e.RowIndex;
+        }
+
+        private void cbTenHangHoa_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+            ComboBox cb = sender as ComboBox;
+            if (cb.SelectedItem == null) { return; }
+            Mon selected = cb.SelectedItem as Mon;
+            mamon = selected.mamon;
+            loadMonAnID(mamon);
+        }
+        
+
+        private void btnChiTietHoaDon_Click(object sender, EventArgs e)
+        {
+            loadchitiethoadon();
+        }
+
+        private void dtgHoaDon_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            int index = e.RowIndex;
+            if (index >= 0)
+            {
+                txtMaHoaDon.Text = dtgHoaDon.Rows[index].Cells[0].Value.ToString();
+                cbMaNhanVien.Text = dtgHoaDon.Rows[index].Cells[2].Value.ToString();
+                cbMaKhachHang.Text = dtgHoaDon.Rows[index].Cells[3].Value.ToString();
+                dateTimePicker1.Text = dtgHoaDon.Rows[index].Cells[1].Value.ToString();
+                txbTongTien.Text = dtgHoaDon.Rows[index].Cells[4].Value.ToString();
+            }
+        }
+
+        private void btnTaoHoaDon_Click(object sender, EventArgs e)
+        {
+            int mahd = int.Parse(txtMaHoaDon.Text);
+            int manv = int.Parse(cbMaNhanVien.Text);
+            int makh = int.Parse(cbMaKhachHang.Text);
+            DateTime ngaylap = DateTime.Parse(dateTimePicker1.Text);
+
+            HoaDon hoadon = new HoaDon(mahd, ngaylap, manv, makh, 0);
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(baseAddress);
+
+                //HTTP POST
+                var postTask = client.PostAsJsonAsync<HoaDon>("HoaDon", hoadon);
+                postTask.Wait();
+
+                var result = postTask.Result;
+                if (result.IsSuccessStatusCode)
+                {
+                    MessageBox.Show("Thêm hóa đơn thành công", "Thông báo", MessageBoxButtons.OK);
+                }
+            }
+
+            //HoaDonDAO.Instance.Create(mahd, ngaylap, manv, makh);
+            load();
+        }
+
+        List<ChiTietHoaDon> chitiethoadon()
+        {
+            int mahd = int.Parse(txtMaHoaDon.Text);
+            List<ChiTietHoaDon> listchitiethoadon = null;
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(baseAddress);
+                //HTTP GET
+                var responseTask = client.GetAsync($"ChiTietHoaDon?mahd={mahd}");
+                responseTask.Wait();
+
+                var result = responseTask.Result;
+                if (result.IsSuccessStatusCode)
+                {
+                    var readTask = result.Content.ReadAsAsync<List<ChiTietHoaDon>>();
+                    readTask.Wait();
+                    listchitiethoadon = readTask.Result;
+                }
+                else //web api sent error response 
+                {
+                    //log response status here..    
+                }
+            }
+            return listchitiethoadon;
+        }
+
+        public void loadchitiethoadon()
+        {
+            int tongtien = 0;
+            for (int i = 0; i <= dtgChiTietHoaDon.Rows.Count - 1; i++)
+            {
+                tongtien += Int32.Parse(dtgChiTietHoaDon.Rows[i].Cells[3].Value.ToString());
+            }
+            txbTongTien.Text = tongtien.ToString();
+            if (txtMaHoaDon.Text == "")
+            {
+                MessageBox.Show("Chưa nhập mã hóa đơn!!!", "Thông báo", MessageBoxButtons.OK);
+            }
+            else
+            {
+                dtgChiTietHoaDon.DataSource = chitiethoadon();
+            }
+
+            //dtgChiTietHoaDon.DataSource = ChiTietHoaDonDAO.Instance.GetList(int.Parse(txtMaHoaDon.Text));
+
+
+        }
+        private void btnAddFood_Click(object sender, EventArgs e)
+        {
+
+            int mahd = int.Parse(txtMaHoaDon.Text);
+            int soluong = int.Parse(NUSoLuong.Value.ToString());
+            int thanhtien = int.Parse(NUSoLuong.Value.ToString()) * int.Parse(txtGiaHang.Text);
+            ChiTietHoaDon chiTietHoaDon = new ChiTietHoaDon(mamon, mahd, soluong, thanhtien);
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(baseAddress);
+
+                //HTTP POST
+                var postTask = client.PostAsJsonAsync<ChiTietHoaDon>($"ChiTietHoaDon", chiTietHoaDon);
+                postTask.Wait();
+
+                var result = postTask.Result;
+                if (result.IsSuccessStatusCode)
+                {
+                    MessageBox.Show("Thêm vào chi tiết hóa đơn thành công", "Thông báo");
+                }
+            }
+            for (int i = 0; i <= dtgChiTietHoaDon.Rows.Count - 1; i++)
+            {
+                tongtien += int.Parse(dtgChiTietHoaDon.Rows[i].Cells[3].Value.ToString());
+            }
+            txbTongTien.Text = tongtien.ToString();
+            //ChiTietHoaDonDAO.Instance.Create(mamon, mahd, soluong, thanhtien);
+
+            loadchitiethoadon();
         }
     }
 }

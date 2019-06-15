@@ -12,7 +12,7 @@ namespace WebAPI_DATA.DAO
     {
         private static volatile DataProvider instance;
         private DataProvider() { }
-        private string str = @"Data Source=DESKTOP-45P13V1\SQLEXPRESS;Initial Catalog=QuanLyBanHang;Integrated Security=True";
+        private string str = @"Data Source=DESKTOP-45P13V1\SQLEXPRESS;Initial Catalog=QuanLyCuaHangAn;Integrated Security=True";
         static object key = new object();
         public static DataProvider Instance
         {

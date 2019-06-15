@@ -16,7 +16,7 @@ namespace WebAPI_WindowsForms
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new frmMonAn());
+            Application.Run(new Home());
         }
     }
 }

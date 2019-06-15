@@ -47,14 +47,25 @@ namespace WebAPI_DATA.DAO
             return list;
         }
 
-        public int Create(int mahd, DateTime ngayhoadon, int manv, int makh, int tongtien)
+        public int Create(int mahd, DateTime ngayhoadon, int manv, int makh)
         {
-            string query = $"INSERT into HoaDonBan VALUES  ( {mahd},  N'{ngayhoadon}', '{tongtien}',  '{makh}' , N'{manv}' )";
+            string query = $"INSERT into HoaDonBan VALUES  ( {mahd},  N'{ngayhoadon}', '0',  '{makh}' , N'{manv}' )";
 
             DataProvider.Instance.ExecuteNonQuery(query);
 
             return 1;
         }
+        public DataTable ThanhToan(string dieukien)
+        {
+            DataTable dth = DataProvider.Instance.ExecuteQuery("select maMon , tenHangHoa , giaHang from Mon " + dieukien);
+            return dth;
+        }
 
+        public int Update(int mahd, int tongtien)
+        {
+            string query = $"UPDATE hoadonban SET tongtien = '{tongtien}'  where mahoadon ='{mahd}'";
+            DataProvider.Instance.ExecuteNonQuery(query);
+            return 1;
+        }
     }
 }
